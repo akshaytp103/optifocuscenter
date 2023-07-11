@@ -1,0 +1,86 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %} Tables {% endblock %}
+{% block content %}
+
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4"> 
+        <div class="card-header pb-0">
+          <h6>Doctors table</h6> 
+        </div>     
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive px-2">
+            <table id="doctors-id" class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Doctors</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mobile</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">avilable date and time</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department</th>
+                  {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th> {% endcomment %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for dr in search_doct %} 
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div>
+                        <img class="rounded-circle" width="50" height="50" src="{{ dr.profile_pic.url }}"  alt="s">                    
+                      </div>
+                      &nbsp&nbsp&nbsp
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{dr.name}}</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                     
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{dr.mobile }}</h6>
+                        <p class="text-xs text-secondary mb-0"></p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                     
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{dr.availabledate }},{{dr.availabetime }}</h6>
+                        <p class="text-xs text-secondary mb-0"></p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                     
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{dr.department }}</h6>
+                        <p class="text-xs text-secondary mb-0"></p>
+                      </div>
+                    </div>
+                  </td>
+                 
+                </tr>
+                {%endfor%}
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ </div>
+ <script>
+  $(document).ready( function () {
+      $('#doctors-id').DataTable();
+  } );
+</script>
+{% endblock %}
