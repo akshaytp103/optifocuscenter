@@ -1,0 +1,97 @@
+{% extends 'otplogin/drbase.html' %}
+{% load static %}
+{% block title %} Patient {% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>PATIENT TABLE</h6>
+          </div>
+          {% for pa in patlist %}
+          <div class="card-body px-0 pt-0 pb-2 mx-3">
+            <div class="table-responsive p-0">
+              <div class="d-flex justify-content-end mb-3">
+              </div>
+              {% endfor %}
+              <table id="patients-id" class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">patients</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">avilable date and time</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Doctor</th>
+                    {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th> {% endcomment %}
+                    
+                    <!-- <th class="text-secondary opacity-7">Permission</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for pa in patlist %}
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div>
+                          {% comment %} <img src="{% static 'profile_pic/patientsProfilePic/' %}" class="avatar avatar-sm me-3" alt="user1"> {% endcomment %}
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{pa.name}}</h6>
+                          <p class="text-xs text-secondary mb-0">{{pa.mobile}}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                       
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{pa.appointmentdate }},{{pa.appointmenttime }}</h6>
+                          <p class="text-xs text-secondary mb-0"></p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                       
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ pa.selectdoctor }}</h6>
+                          <p class="text-xs text-secondary mb-0"></p>
+                        </div>
+                      </div>
+                    </td>
+                    
+  
+                    {% comment %} <td>
+                      <span class="badge badge-sm bg-gradient-success">Active</span>
+                    </td>
+     {% endcomment %}
+                    <td> 
+                      {% comment %} <div class="d-flex px-2 py-1">
+                        
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm"><a class="badge bg-gradient-success d-flex align-items-center justify-content-center"
+                            href="{% url 'Patients_edit' pa.id %}" style="color: White; width: 150px; height:35px;">EDIT PATIENT</a></h6>
+                          <p class="text-xs text-secondary mb-0"></p>
+                        </div>
+                      </div> {% endcomment %}
+                      
+                    </td>
+                  </tr>
+                  {%endfor%}
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+   </div>
+   <script>
+    $(document).ready( function () {
+        $('#patients-id').DataTable();
+    } );
+  </script>
+  {% endblock %}
+  

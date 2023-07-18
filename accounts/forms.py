@@ -36,7 +36,7 @@ class Patientform(forms.ModelForm):
 class Doctorform(forms.ModelForm):
     class Meta:
         model = Doctor
-        fields = ["name","availabledate", "availabetime","profile_pic","mobile","department","status"]
+        fields = ["name","availabledate", "email", "availabetime","profile_pic","mobile","department","status"]
         
     def __init__(self, *args, **kwargs):
         super(Doctorform, self).__init__(*args, **kwargs)

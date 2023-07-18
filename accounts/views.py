@@ -46,4 +46,4 @@ def search(request):
     
 def view_appointment(request):
     appoi=account.objects.all()
-    return render(request, 'view_appointment.html',{'appoi':appoi})
+    return render(request, 'view_appointment.html',{'appoi':appoi}) 

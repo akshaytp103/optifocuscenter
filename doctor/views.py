@@ -1,52 +1,99 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.conf import settings
 from django.utils.crypto import get_random_string
-from accounts.models import account
-from .forms import EmailForm
-# from .models import OTP
+from accounts.models import *
+from .models import OTP
+import random
+from django.conf import settings
+from django.contrib import messages, auth
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.core.mail import EmailMessage
 
-# def send_otp(request):
-#     if request.method == 'POST':
-#         form = EmailForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             user, created = account.objects.get_or_create(email=email)
 
-#             # Generate a 6-digit OTP
-#             otp = get_random_string(length=4, allowed_chars='0123456789')
 
-#             # Store the OTP in the database
-#             otp_obj = OTP(user=user, otp_code=otp)
-#             otp_obj.save()
 
-#             # Send the OTP to the user's email address
-#             subject = 'OTP Verification'
-#             message = f'Your OTP is: {otp}'
-#             from_email = settings.DEFAULT_FROM_EMAIL
-#             to_email = [email]
-#             send_mail(subject, message, from_email, to_email)
 
-#             return redirect('verify_otp')
-#     else:
-#         form = EmailForm()
+
+def login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        token = str(random.randint(100000, 999999))
+        OTP.objects.update_or_create(email=email, defaults={'token': token})
+        send_mail(
+            'OTP for Login',
+            f'Your OTP is : {token}',     
+            'lothbrok007007@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+        return render(request, 'otplogin/verify_otp.html', {'email': email})
+    return render(request, 'otplogin/send_otp.html')
+
+
+def verify_otp(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        otp = request.POST.get('otp')
+        otp_obj = OTP.objects.filter(email=email, token=otp).order_by('-created_at').first()
+        if otp_obj:
+            # OTP is valid
+            otp_obj.delete()  # Remove the OTP from the database after verification
+            # Add your logic here to log in the user or redirect to the appropriate page
+            return redirect('doctors_table')
+        else:
+            # OTP is invalid
+            messages.error(request, "Incorrect OTP") 
+    return redirect('login')
+
+def doctors_table(request):
+    admin_dr=Doctor.objects.all()
+    context={
+        'admin_dr': admin_dr,
+    }
+    return render(request, "otplogin/doctorlist.html",context)
+
+def patients_table(request):
+    patlist=account.objects.all()   
+    context={
+        'patlist' : patlist,
+       
+    }
+    return render(request, "otplogin/patient_table.html",context)
+
+
+
+# def patientlist_for_each_dr(request,id):
+#     related_id = id
+#     doct_values = account.objects.filter(selectdoctor__id=related_id).values_list('selectdoctor__name', flat=True).distinct()
     
-#     return render(request, 'send_otp.html', {'form': form})
+#     distinct_values = account.objects.values_list('selectdoctor', flat=True).distinct()
+#     print(222,distinct_values)
 
-# def verify_otp(request):
-#     if request.method == 'POST':
-#         otp = request.POST.get('otp')
-#         user = request.user
+#     # Step 3: Iterate over each distinct value and filter the model
+#     for value in distinct_values:
+#         condition = Q(selectdoctor=value)  
+#         print(444,condition)     
+#         # Apply the filter to the model and retrieve the results
+#         results = account.objects.filter(condition)
+#         print(111,id,results)
+#         context={
+#             'results': results,
+#             'doct_values' :doct_values
+#         }
+#         return render (request, 'otplogin/patientlistfordr.html',context)
 
-#         # Check if the OTP matches the one stored in the database
-#         otp_obj = OTP.objects.filter(user=user, otp_code=otp).first()
-#         if otp_obj:
-#             # OTP is valid
-#             otp_obj.delete()  # Remove the OTP from the database
-#             return redirect('home')
-#         else:
-#             # OTP is invalid
-#             return redirect('verify_otp')
+def patientlist_for_each_dr(request,id):
+    related_id = id
+    doct_values = account.objects.filter(selectdoctor__id=related_id).values_list('selectdoctor__name', flat=True).distinct()
+    
+    results = account.objects.filter(selectdoctor__id=related_id)
+    context={
+        'results': results,
+        'doct_values' :doct_values
+    } 
+    return render (request, 'otplogin/patientlistfordr.html',context)
 
-#     return render(request, 'verify_otp.html')
+
+

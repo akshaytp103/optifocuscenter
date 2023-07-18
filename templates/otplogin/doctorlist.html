@@ -1,4 +1,4 @@
-{% extends 'admin/admin.html' %}
+{% extends 'otplogin/drbase.html' %}
 {% load static %}
 {% block title %} Tables {% endblock %}
 {% block content %}
@@ -20,21 +20,21 @@
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mobile</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">avilable date and time</th>
                   <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">View patient by doctor</th>
+                  {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th> {% endcomment %}
                 </tr>
               </thead>
               <tbody>
-                {% for dr in drlist %} 
+                {% for dr in admin_dr %} 
                 <tr>
                   <td>
                     <div class="d-flex px-2 py-1">
                       <div>
-                        {% comment %} <img class="rounded-circle" width="50" height="50" src="{{ dr.profile_pic.url }}"  alt="s">                     {% endcomment %}
+                        {% comment %} <img class="rounded-circle" width="50" height="50" src="{{ dr.profile_pic }}"  alt="s">                     {% endcomment %}
                       </div>
                       &nbsp&nbsp&nbsp
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{dr.name}}</h6>
+                        <h6 class="mb-0 text-sm">{{ dr.name }}</h6>
                       </div>
                     </div>
                   </td>
@@ -42,7 +42,7 @@
                     <div class="d-flex px-2 py-1">
                      
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{dr.mobile }}</h6>
+                        <h6 class="mb-0 text-sm">{{ dr.mobile }}</h6>
                         <p class="text-xs text-secondary mb-0"></p>
                       </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="d-flex px-2 py-1">
                      
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{dr.availabledate }},{{dr.availabetime }}</h6>
+                        <h6 class="mb-0 text-sm">{{ dr.availabledate }},{{dr.availabetime }}</h6>
                         <p class="text-xs text-secondary mb-0"></p>
                       </div>
                     </div>
@@ -60,27 +60,27 @@
                     <div class="d-flex px-2 py-1">
                      
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{dr.department }}</h6>
+                        <h6 class="mb-0 text-sm">{{ dr.department }}</h6>
                         <p class="text-xs text-secondary mb-0"></p>
-                      </div>
+                      </div>    
                     </div>
                   </td>
                   <td >
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-0 text-sm"><a class="badge bg-gradient-success d-flex align-items-center justify-content-center"
-                        href="{% url 'doctor_delete' dr.id %}" style="color: White; width: 150px; height:35px;">Delete</a></h6>
+                        href="{% url 'patientlist_for_each_dr' dr.id %}" style="color: White; width: 150px; height:35px;">View patients</a></h6>
                       <p class="text-xs text-secondary mb-0"></p> 
                     </div>
                   </td> 
                   <td>
-                    <div class="d-flex px-2 py-1">  
+                    {% comment %} <div class="d-flex px-2 py-1">  
                      
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm"><a class="badge bg-gradient-success d-flex align-items-center justify-content-center"
                           href="{% url 'doctors_edit' dr.id %}" style="color: White; width: 150px; height:35px;">EDIT DOCTOR</a></h6>
                         <p class="text-xs text-secondary mb-0"></p>
                       </div>
-                    </div>
+                    </div> {% endcomment %}
                   </td>
                 </tr>
                 {%endfor%}
