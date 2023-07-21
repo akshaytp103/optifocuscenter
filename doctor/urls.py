@@ -9,6 +9,7 @@ urlpatterns = [
     path('doctors_table/', views.doctors_table, name='doctors_table'),
     path('patients_table/', views.patients_table, name='patients_table'),
     path('patientlist_for_each_dr/<str:id>/', views.patientlist_for_each_dr, name='patientlist_for_each_dr'),
+  
     
     
 ]

@@ -149,3 +149,15 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lothbrok007007@gmail.com'  # Replace with your Gmail email address
 EMAIL_HOST_PASSWORD = 'ugpirfalovxrgnjr'  # Replace with your Gmail password or app-specific password
+
+
+
+
+WKHTMLTOPDF_PATH = 'usr/bin/wkhtmltopdf'  # Set the path to the wkhtmltopdf executable
+PDFKIT_OPTIONS = {
+    'quiet': '',    
+    'margin-top': '0mm',
+    'margin-right': '0mm',
+    'margin-bottom': '0mm',
+    'margin-left': '0mm',   
+}

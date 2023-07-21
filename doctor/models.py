@@ -11,3 +11,4 @@ class OTP(models.Model):
 
     def __str__(self):
         return self.otp_code
+    

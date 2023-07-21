@@ -1,3 +1,4 @@
+import os
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -6,14 +7,9 @@ from accounts.models import *
 from .models import OTP
 import random
 from django.conf import settings
-from django.contrib import messages, auth
-from django.template.loader import get_template
-from xhtml2pdf import pisa
+from django.contrib import messages,auth
+from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-
-
-
-
 
 
 def login(request):
@@ -64,25 +60,6 @@ def patients_table(request):
 
 
 
-# def patientlist_for_each_dr(request,id):
-#     related_id = id
-#     doct_values = account.objects.filter(selectdoctor__id=related_id).values_list('selectdoctor__name', flat=True).distinct()
-    
-#     distinct_values = account.objects.values_list('selectdoctor', flat=True).distinct()
-#     print(222,distinct_values)
-
-#     # Step 3: Iterate over each distinct value and filter the model
-#     for value in distinct_values:
-#         condition = Q(selectdoctor=value)  
-#         print(444,condition)     
-#         # Apply the filter to the model and retrieve the results
-#         results = account.objects.filter(condition)
-#         print(111,id,results)
-#         context={
-#             'results': results,
-#             'doct_values' :doct_values
-#         }
-#         return render (request, 'otplogin/patientlistfordr.html',context)
 
 def patientlist_for_each_dr(request,id):
     related_id = id
@@ -94,6 +71,5 @@ def patientlist_for_each_dr(request,id):
         'doct_values' :doct_values
     } 
     return render (request, 'otplogin/patientlistfordr.html',context)
-
 
 

@@ -3,6 +3,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect,HttpResponse
 from django.contrib import messages, auth
 from .forms import Patientform
+from django.template.loader import get_template
+
 
 
 
@@ -47,3 +49,36 @@ def search(request):
 def view_appointment(request):
     appoi=account.objects.all()
     return render(request, 'view_appointment.html',{'appoi':appoi}) 
+
+
+def appointments_pdf(request,id): 
+    resultspdf = account.objects.get(id=id)
+    context={
+        'resultspdf': resultspdf,
+    } 
+    return render (request, 'appointment_pdf.html',context) 
+
+
+def pdf_report_create(request):
+    appointment_pdf = account.objects.all()
+
+    template_path = 'appointment_pdf2.html'
+
+    context = {'appointment_pdf': appointment_pdf}
+
+    response = HttpResponse(content_type='application/pdf')
+
+    response['Content-Disposition'] = 'filename="appointment2_pdf.pdf"'
+
+    template = get_template(template_path)
+
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+    
