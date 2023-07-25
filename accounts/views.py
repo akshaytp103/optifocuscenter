@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect,HttpResponse
 from django.contrib import messages, auth
 from .forms import Patientform
 from django.template.loader import get_template
-
+from xhtml2pdf import pisa
 
 
 
@@ -59,20 +59,22 @@ def appointments_pdf(request,id):
     return render (request, 'appointment_pdf.html',context) 
 
 
-def pdf_report_create(request):
-    appointment_pdf = account.objects.all()
+def pdf_report_create(request,id):
+    appointment_pdf = account.objects.get(id=id)
+    
 
-    template_path = 'appointment_pdf2.html'
+    template_path = 'appointment_pdf.html'
 
     context = {'appointment_pdf': appointment_pdf}
 
     response = HttpResponse(content_type='application/pdf')
 
-    response['Content-Disposition'] = 'filename="appointment2_pdf.pdf"'
+    response['Content-Disposition'] = 'filename="appointment_pdf.pdf"'
 
     template = get_template(template_path)
 
     html = template.render(context)
+    # html = template.render('appointment_pdf.html')
 
     # create a pdf
     pisa_status = pisa.CreatePDF(
